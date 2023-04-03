@@ -1,6 +1,6 @@
   {
     "domain": "multisensor",
-    "name": "VTEC multisensor",
+    "name": "test case for multisensor",
     "codeowners": [
       "@H1Xu"
   ],
