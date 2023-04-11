@@ -1,7 +1,7 @@
 {
   "domain": "test_case",
   "name": "test_case",
-  "codeowners": ["@pawkakol1"],
+  "codeowners": ["@H1Xu"],
   "config_flow": true,
   "dependencies": [],
   "documentation": "https://github.com/pawkakol1/worlds-air-quality-index",
