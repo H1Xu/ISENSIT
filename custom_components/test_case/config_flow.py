@@ -34,15 +34,8 @@ from .const import (
 class WorldsAirQualityIndexConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for worlds_air_quality_index integration."""
 
-    #VERSION = 3
+    VERSION = 1
 
-    '''async def async_step_import(self, config: dict[str, Any]) -> FlowResult:
-        """Import a configuration from config.yaml."""
-
-        name = config.get(CONF_NAME, DEFAULT_NAME)
-        self._async_abort_entries_match({CONF_NAME: name})
-        config[CONF_NAME] = name
-        return await self.async_step_user(user_input=config)'''
     def async_get_options_flow(config_entry):
         return OptionsFlowHandler(config_entry)
 
