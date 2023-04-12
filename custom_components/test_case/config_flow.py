@@ -32,90 +32,40 @@ from .const import (
 
 
 class WorldsAirQualityIndexConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Handle a config flow for worlds_air_quality_index integration."""
+    #Handle a config flow for worlds_air_quality_index integration.
 
     VERSION = 1
 
-    '''def async_get_options_flow(config_entry):
-        return OptionsFlowHandler(config_entry)'''
-
-    async def async_step_user(self, user_input: dict[str, Any] | None = None):
-        """Handle the initial step."""
+    async def async_step_user(self, user_input = None):
+        #Handle the initial step of user input.
 
         if user_input is None:
-            return await self.async_step_station_id(user_input = user_input)
-            
+        #verify input of users
+
+            return await self.async_step_station_id()
+            #if input then call step staion id function
+        
         return self.async_show_form(
-                step_id="user",
-                data_schema=data_schema,
+            step_id = "user",
+            data_schema = vol.Schema(
+                {
+                    vol.Required("station_id"): str,
+                    #vol method requires station id to be string
+                }),
             )
 
-    
-    async def async_step_station_id(self, user_input=None) -> FlowResult:
-        errors = {}
 
-        data_schema = vol.Schema(
-            {
-                vol.Required(CONF_TOKEN): cv.string,
-                vol.Required(CONF_TEMPERATURE_UNIT, default=TEMP_CELSIUS): vol.In(
-                    (
-                        TEMP_CELSIUS,
-                        TEMP_FAHRENHEIT
-                    )
-                ),
-                vol.Required(CONF_ID): cv.string,
-                vol.Optional(CONF_NAME): cv.string
-            }
-        )
 
-        if user_input:
-
-            token = user_input[CONF_TOKEN]
-            tempUnit = user_input[CONF_TEMPERATURE_UNIT]
-            id = user_input[CONF_ID]
-            method = CONF_ID
-            requester = WaqiDataRequester(None, None, token, id, method)
-            await self.hass.async_add_executor_job(requester.update)
-
-            validateData = requester.GetData()
-            if validateData:
-                if validateData["status"] == "ok":
-                    if "status" in validateData["data"]:
-                        if validateData["data"]["status"] == "error":
-                            if validateData["data"]["msg"] == "Unknown ID":
-                                errors["base"] = "unknow_station_id"
-                            else:
-                                errors["base"] = "server_error"
-                elif validateData["status"] == "error":
-                    if validateData["data"] == "Invalid key":
-                        errors["base"] = "invalid_token"
-                    else:
-                        errors["base"] = "server_error"
-                else:
-                    errors["base"] = "server_error"
-            else:
-                errors["base"] = "server_not_available"
-
-            stationName = requester.GetStationName()
-            name = user_input.get(CONF_NAME, stationName)
-            
-            if not errors:
-                await self.async_set_unique_id(name)
-                self._abort_if_unique_id_configured()
-
-                return self.async_create_entry(
-                    title=name,
-                    data={
-                        CONF_TOKEN: token,
-                        CONF_TEMPERATURE_UNIT: tempUnit,
-                        CONF_ID: id,
-                        CONF_NAME: name,
-                        CONF_METHOD: method,
-                    },
-                )
-
+    async def async_step_station_id(self, user_input=None):
+        if user_input is not None:
+            return self.async_create_entry(
+                title = "Sensor ID",
+                data = {},
+            )
+        
         return self.async_show_form(
-            step_id="station_id",
-            data_schema=data_schema,
-            errors=errors,
+            step_id = "station_id",
+            data_schema = vol.Schema({
+                vol.Required("station_id"):str
+            }),
         )
