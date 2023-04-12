@@ -13,6 +13,6 @@
   "version": "1.0.1",
   "zeroconf": [],
   "icon": {
-    "default": "image/icon.jpg"
+    "default": "images/VTEC.png"
   }
 }
