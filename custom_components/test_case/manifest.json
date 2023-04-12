@@ -13,4 +13,5 @@
   "version": "1.0.1",
   "zeroconf": [],
   "icon": "images/icon.png"
+  "logo": "images/icon.png"
 }
