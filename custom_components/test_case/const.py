@@ -16,7 +16,7 @@ from homeassistant.const import (
 )
 from homeassistant.components.sensor import SensorDeviceClass
 
-DOMAIN = "test_case"
+DOMAIN = "ISENSIT"
 PLATFORMS = [Platform.SENSOR]
 SW_VERSION = "1.0.1"
 
