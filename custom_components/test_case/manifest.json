@@ -1,6 +1,6 @@
 {
-  "domain": "test_case",
-  "name": "test_case",
+  "domain": "ISENSIT",
+  "name": "smart multisensor",
   "codeowners": ["@H1Xu"],
   "config_flow": true,
   "dependencies": [],
