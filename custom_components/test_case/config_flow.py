@@ -49,9 +49,8 @@ class WorldsAirQualityIndexConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         data_schema = vol.Schema(
             {
-                vol.Required(CONF_METHOD, default=GEOGRAPHIC_LOCALIZATION): vol.In(
+                vol.Required(CONF_METHOD, default=STATION_ID): vol.In(
                     (
-                        GEOGRAPHIC_LOCALIZATION,
                         STATION_ID
                     )
                 )
@@ -65,7 +64,7 @@ class WorldsAirQualityIndexConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 data_schema=data_schema,
             )
 
-        if user_input[CONF_METHOD] == GEOGRAPHIC_LOCALIZATION:
+        if user_input[CONF_METHOD] == STATION_ID:
             #return await self.async_step_geographic_localization()
             return await self.async_step_station_id()
     
