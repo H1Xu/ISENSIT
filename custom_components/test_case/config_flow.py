@@ -66,10 +66,10 @@ class WorldsAirQualityIndexConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             )
 
         if user_input[CONF_METHOD] == GEOGRAPHIC_LOCALIZATION:
-            return await self.async_step_geographic_localization()
-        return await self.async_step_station_id()
+            #return await self.async_step_geographic_localization()
+            return await self.async_step_station_id()
     
-    async def async_step_geographic_localization(self, user_input=None) -> FlowResult:
+    '''async def async_step_geographic_localization(self, user_input=None) -> FlowResult:
         """Handle the geographic localization step."""
         errors = {}
 
@@ -139,7 +139,7 @@ class WorldsAirQualityIndexConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             step_id="geographic_localization",
             data_schema=data_schema,
             errors=errors,
-        )
+        )'''
 
     async def async_step_station_id(self, user_input=None) -> FlowResult:
         errors = {}
