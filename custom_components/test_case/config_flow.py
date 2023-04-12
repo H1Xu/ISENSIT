@@ -34,39 +34,29 @@ from .const import (
 class WorldsAirQualityIndexConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for worlds_air_quality_index integration."""
 
-    VERSION = 3
+    #VERSION = 3
 
-    async def async_step_import(self, config: dict[str, Any]) -> FlowResult:
+    '''async def async_step_import(self, config: dict[str, Any]) -> FlowResult:
         """Import a configuration from config.yaml."""
 
         name = config.get(CONF_NAME, DEFAULT_NAME)
         self._async_abort_entries_match({CONF_NAME: name})
         config[CONF_NAME] = name
-        return await self.async_step_user(user_input=config)
+        return await self.async_step_user(user_input=config)'''
+    def async_get_options_flow(config_entry):
+        return OptionsFlowHandler(config_entry)
 
-    async def async_step_user(self, user_input: dict[str, Any] | None = None) -> FlowResult:
+    async def async_step_user(self, user_input: dict[str, Any] | None = None):
         """Handle the initial step."""
 
-        data_schema = vol.Schema(
-            {
-                vol.Required(CONF_METHOD, default=STATION_ID): vol.In(
-                    (
-                        STATION_ID
-                    )
-                )
-
-            }
-        )
-
         if user_input is None:
-            return self.async_show_form(
+            return await self.async_step_station_id(user_input = user_input)
+            
+        return self.async_show_form(
                 step_id="user",
                 data_schema=data_schema,
             )
 
-        if user_input[CONF_METHOD] == STATION_ID:
-            #return await self.async_step_geographic_localization()
-            return await self.async_step_station_id()
     
     '''async def async_step_geographic_localization(self, user_input=None) -> FlowResult:
         """Handle the geographic localization step."""
