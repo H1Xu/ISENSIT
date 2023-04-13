@@ -27,6 +27,7 @@ class WorldsAirQualityIndexConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             #if input then call step staion id function
         
         return self.async_show_form(
+            title = localized(self.hass, "componenet.multi_sensor.title"),
             step_id = "user",
             data_schema = vol.Schema(
                 {
