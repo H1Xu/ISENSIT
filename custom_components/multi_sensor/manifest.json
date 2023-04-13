@@ -1,0 +1,15 @@
+{
+    "domain": "ISENSIT",
+    "name": "smart multisensor",
+    "codeowners": ["@H1Xu"],
+    "config_flow": true,
+    "dependencies": [],
+    "documentation": "https://github.com/H1Xu/test-case",
+    "homekit": {},
+    "iot_class": "cloud_polling",
+    "issue_tracker": "https://github.com/H1Xu/test-case/issues",
+    "requirements": [],
+    "ssdp": [],
+    "version": "1.0.1",
+    "zeroconf": []
+  }
