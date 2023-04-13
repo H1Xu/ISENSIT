@@ -30,9 +30,10 @@ class WorldsAirQualityIndexConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             step_id = "user",
             data_schema = vol.Schema(
                 {
-                    vol.Required("station_id", description = {"value" = "Please enter the sensor ID"}): str,
+                    vol.Required("station_id"): str,
                     #vol method requires station id to be string
                 }),
+            description_placeholder = {"value" = "Please enter the sensor ID"}
             )
 
 
