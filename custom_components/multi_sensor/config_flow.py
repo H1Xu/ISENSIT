@@ -23,19 +23,21 @@ class WorldsAirQualityIndexConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is None:
         #verify input of users
 
-            return await self.async_step_station_id()
+            return await self.async_step_station_id(title = "Welcome to ISENSIT", data = user_input)
             #if input then call step staion id function
         
         return self.async_show_form(
             step_id = "user",
             data_schema = vol.Schema(
                 {
-                    vol.Required("station_id"): str,
+                    vol.Required("station_id", description = "Sensor ID"): str,
                     #vol method requires station id to be string
-                }),
-            description_placeholder = {"value" = "Please enter the sensor ID"}
-            )
-
+                }
+            ),
+             description_placeholders={
+                "Sensor ID"
+            },
+        )
 
 
     async def async_step_station_id(self, user_input=None):
