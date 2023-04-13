@@ -23,7 +23,7 @@ class WorldsAirQualityIndexConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is None:
         #verify input of users
 
-            return await self.async_step_station_id(title = "Welcome to ISENSIT", data = user_input)
+            return await self.async_step_station_id()
             #if input then call step staion id function
         
         return self.async_show_form(
