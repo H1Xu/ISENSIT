@@ -13,17 +13,18 @@ from .const import (
 )
 
 
-class WorldsAirQualityIndexConfigFlow(config_entries.ConfigFlow):
+class ISENSITFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
     #Handle a config flow for worlds_air_quality_index integration.
 
     VERSION = 1
 
-    async def async_step_user(self, user_input = None):
+async def async_step_user(self, user_input = None):
         #Handle the initial step of user input.
         errors = {}
 
         if user_input is None:
-            #verify input of users
+        #verify input of users
+
             return await self.async_step_sensor_id()
             #if input then call step staion id function
         
@@ -37,17 +38,20 @@ class WorldsAirQualityIndexConfigFlow(config_entries.ConfigFlow):
                 }
             ),
         )
-
-    async def async_step_sensor_id(self, user_input=None):
-        if user_input is not None:
-            return self.async_create_entry(
-                title = "sensor ID",
-                data = {},
-            )
         
-        return self.async_show_form(
-            step_id = "sensor_id",
-            data_schema = vol.Schema({
-                vol.Required("sensor_id"):str
-            }),
+
+
+
+async def async_step_sensor_id(self, user_input=None):
+    if user_input is not None:
+        return self.async_create_entry(
+            title = "sensor ID",
+            data = {},
         )
+        
+    return self.async_show_form(
+        step_id = "sensor_id",
+        data_schema = vol.Schema({
+            vol.Required("sensor_id"):str
+        }),
+    )
