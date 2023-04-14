@@ -21,7 +21,6 @@ class ISENSITFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
 async def async_step_user(self, user_input = None):
         #Handle the initial step of user input.
-        errors = {}
 
         if user_input is None:
         #verify input of users
@@ -30,7 +29,6 @@ async def async_step_user(self, user_input = None):
             #if input then call step staion id function
         
         return self.async_show_form(
-            title = localized(self.hass, "componenet.multi_sensor.title"),
             step_id = "user",
             data_schema = vol.Schema(
                 {
@@ -46,7 +44,6 @@ async def async_step_user(self, user_input = None):
     async def async_step_sensor_id(self, user_input=None):
         if user_input is not None:
             return self.async_create_entry(
-                title = "sensor ID",
                 data = {},
             )
         
