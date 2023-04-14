@@ -14,7 +14,7 @@ from .const import (
 )
 
 
-class ISENSITFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
+class WorldsAirQualityIndexConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     #Handle a config flow for worlds_air_quality_index integration.
 
     VERSION = 1
