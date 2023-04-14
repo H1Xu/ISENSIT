@@ -1,0 +1,17 @@
+{
+  "title":"ISENSIT",
+  "step": {
+    "user": {
+      "title": "Configure ISENSIT",
+      "description": "Please enter your device ID",
+      "data": {
+        "device_id": "Device ID",
+        "name": "name",
+        "scan_interval": "Scan Interval (in min)"
+      }
+    }
+  },
+  "error": {
+    "invalid_device_id": "Invalid Device ID. Please check your input"
+  }
+}  
