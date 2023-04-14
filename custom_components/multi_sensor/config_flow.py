@@ -26,40 +26,42 @@ class ISENSITFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
 
 
-"""Config flow for multi-sensor integration."""
-import voluptuous as vol
+"""Config flow for ISENSIT Sensor integration."""
 from homeassistant import config_entries
-from homeassistant.core import callback
 from homeassistant.const import CONF_NAME
+
 from .const import DOMAIN
 
 
-class MultiSensorFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
-    """Handle a config flow for multi-sensor."""
+class ISENSITSensorFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
+    """Handle a ISENSIT Sensor config flow."""
 
     VERSION = 1
-    CONNECTION_CLASS = config_entries.CONN_CLASS_LOCAL_PUSH
+    CONNECTION_CLASS = config_entries.CONN_CLASS_LOCAL_POLL
 
     async def async_step_user(self, user_input=None):
         """Handle the initial step."""
         if user_input is None:
-            return self._show_form()
+            # Show the configuration form to the user
+            return self.async_show_form(
+                step_id="user",
+                data_schema=self.get_data_schema(),
+                errors={},
+                description_placeholders={
+                    "title": "ISENSIT Sensor Configuration",
+                    "description": "Please enter sensor ID"
+                },
+            )
 
+        # Data has been submitted, create the entity
         return self.async_create_entry(
             title=user_input[CONF_NAME],
-            data={CONF_NAME: user_input[CONF_NAME]},
+            data=user_input,
         )
 
-    @callback
-    def _show_form(self, errors=None):
-        """Show the form to the user."""
-        return self.async_show_form(
-            step_id="user",
-            data_schema=vol.Schema(
-                {vol.Required(CONF_NAME, default="Station ID"): str}
-            ),
-            errors=errors,
-            description_placeholders={
-                "title": "Multi-sensor integration configuration"
-            },
-        )
+    def get_data_schema(self):
+        """Return the data schema."""
+        return {
+            config_entries.Optional(CONF_NAME): str,
+            config_entries.Required("sensor_id"): str,
+        }
