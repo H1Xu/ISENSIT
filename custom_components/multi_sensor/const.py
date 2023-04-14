@@ -16,7 +16,7 @@ from homeassistant.const import (
 )
 from homeassistant.components.sensor import SensorDeviceClass
 
-DOMAIN = "ISENSIT"
+DOMAIN = "worlds_air_quality_index"
 PLATFORMS = [Platform.SENSOR]
 SW_VERSION = "1.0.1"
 
