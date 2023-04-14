@@ -1,6 +1,6 @@
 {
     "domain": "ISENSIT",
-    "name": "smart multisensor",
+    "name": "multi sensor",
     "codeowners": ["@H1Xu"],
     "config_flow": true,
     "dependencies": [],
