@@ -21,6 +21,7 @@ class WorldsAirQualityIndexConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_step_user(self, user_input = None):
         #Handle the initial step of user input.
+        errors = {}
 
         if user_input is None:
         #verify input of users
