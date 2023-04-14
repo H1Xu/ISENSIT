@@ -1,3 +1,4 @@
+"""Adds config flow for worlds_air_quality_index integration."""
 from __future__ import annotations
 
 from typing import Any
@@ -18,18 +19,17 @@ class ISENSITFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
     VERSION = 1
 
-async def async_step_user(self, user_input = None):
+    async def async_step_user(self, user_input = None):
         #Handle the initial step of user input.
         errors = {}
 
-        if user_input is None:
+        if user_input is not None:
         #verify input of users
 
             return await self.async_step_sensor_id()
             #if input then call step staion id function
         
         return self.async_show_form(
-            title = localized(self.hass, "componenet.multi_sensor.title"),
             step_id = "user",
             data_schema = vol.Schema(
                 {
@@ -42,16 +42,16 @@ async def async_step_user(self, user_input = None):
 
 
 
-async def async_step_sensor_id(self, user_input=None):
-    if user_input is not None:
-        return self.async_create_entry(
-            title = "sensor ID",
-            data = {},
-        )
+    async def async_step_sensor_id(self, user_input=None):
+        if user_input is not None:
+            return self.async_create_entry(
+                title = "sensor ID",
+                data = {},
+            )
         
-    return self.async_show_form(
-        step_id = "sensor_id",
-        data_schema = vol.Schema({
-            vol.Required("sensor_id"):str
-        }),
-    )
+        return self.async_show_form(
+            step_id = "sensor_id",
+            data_schema = vol.Schema({
+                vol.Required("sensor_id"):str
+            }),
+        )
