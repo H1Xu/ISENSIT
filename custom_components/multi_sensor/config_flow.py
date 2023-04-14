@@ -23,48 +23,43 @@ class ISENSITFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 {vol.Required("sensor_id"): str}
             )
         )"""
+
+
+
+"""Config flow for multi-sensor integration."""
+import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.core import callback
+from homeassistant.const import CONF_NAME
+from .const import DOMAIN
 
-class ISENSITFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
-    ...
+
+class MultiSensorFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
+    """Handle a config flow for multi-sensor."""
+
+    VERSION = 1
+    CONNECTION_CLASS = config_entries.CONN_CLASS_LOCAL_PUSH
 
     async def async_step_user(self, user_input=None):
         """Handle the initial step."""
         if user_input is None:
-            return self._show_form(
-                description_placeholders={
-                    "placeholder_text": "Please enter the sensor ID",
-                },
-                errors={},
-                title="ISENSIT Configuration",
-            )
+            return self._show_form()
 
-        # Get the sensor ID from the user input
-        sensor_id = user_input["sensor_id"]
+        return self.async_create_entry(
+            title=user_input[CONF_NAME],
+            data={CONF_NAME: user_input[CONF_NAME]},
+        )
 
-        # Store the sensor ID in the options
-        options = {
-            "sensor_id": sensor_id,
-        }
-
-        # Create the config entry and return the options
-        return self.async_create_entry(title="", data=options)
-    
-    def _show_form(self, description_placeholders, errors, title):
+    @callback
+    def _show_form(self, errors=None):
         """Show the form to the user."""
         return self.async_show_form(
             step_id="user",
             data_schema=vol.Schema(
-                {
-                    vol.Required(
-                        "sensor_id",
-                        description={"suggested_value": description_placeholders["placeholder_text"]},
-                    ): str
-                }
+                {vol.Required(CONF_NAME, default="Station ID"): str}
             ),
             errors=errors,
-            description_placeholders=description_placeholders,
-            title=title,
+            description_placeholders={
+                "title": "Multi-sensor integration configuration"
+            },
         )
-
