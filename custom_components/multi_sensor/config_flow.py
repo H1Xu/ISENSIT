@@ -1,4 +1,4 @@
-"""Config flow for ISENSIT integration.
+"""Config flow for ISENSIT integration."""
 from homeassistant import config_entries
 from homeassistant.core import callback
 import voluptuous as vol
@@ -22,11 +22,11 @@ class ISENSITFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             data_schema=vol.Schema(
                 {vol.Required("sensor_id"): str}
             )
-        )"""
+        )
 
 
 
-"""Config flow for ISENSIT Sensor integration."""
+"""Config flow for ISENSIT Sensor integration.
 from homeassistant import config_entries
 from homeassistant.const import CONF_NAME
 
@@ -64,4 +64,4 @@ class ISENSITSensorFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         return {
             config_entries.Optional(CONF_NAME): str,
             config_entries.Required("sensor_id"): str,
-        }
+        }"""
