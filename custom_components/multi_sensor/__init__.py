@@ -49,7 +49,7 @@ async def async_migrate_entry(hass, config_entry):
     version = config_entry.version
 
     _LOGGER.debug("Migrating World's Air Quality Index entry from version %s", version)
-    
+
     if version == 1:
         method = CONF_LOCATION
         idx = None
@@ -75,6 +75,7 @@ async def async_migrate_entry(hass, config_entry):
         version = 3
         config_entry.version = version
         config_entries.async_update_entry(config_entry, data=new_data)
+
 
     _LOGGER.info("Migration to version %s successful", version)
 
