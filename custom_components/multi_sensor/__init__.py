@@ -1,82 +1,106 @@
-"""The worlds_air_quality_index component."""
-from __future__ import annotations
-
+"""The ISENSIT component."""
+import asyncio
 import logging
 
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import (
-    HomeAssistant
-)
-from homeassistant.const import (
-    CONF_LATITUDE, 
-    CONF_LONGITUDE, 
-    CONF_LOCATION,
-    CONF_METHOD,
-    CONF_ID,
-    CONF_TEMPERATURE_UNIT,
-    TEMP_CELSIUS
-)
-
-from .const import (
-    PLATFORMS
-)
+import homeassistant.helpers.config_validation as cv
+import voluptuous as vol
+from homeassistant.const import CONF_NAME
+from homeassistant.helpers import discovery
+from homeassistant.helpers.entity import Entity
+from homeassistant.helpers.entity_component import EntityComponent
+from homeassistant.helpers.typing import HomeAssistantType
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 _LOGGER = logging.getLogger(__name__)
 
+DOMAIN = "isensit"
 
-async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up World's Air Quality Index from a config entry."""
+CONF_MQTT_BROKER = "broker"
+CONF_MQTT_PORT = "port"
+CONF_MQTT_USERNAME = "username"
+CONF_MQTT_PASSWORD = "password"
+CONF_MQTT_TOPIC = "topic"
+CONF_SENSORS = "sensors"
 
-    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
-    entry.async_on_unload(entry.add_update_listener(update_listener))
-    return True
+DEFAULT_PORT = 1883
+DEFAULT_NAME = "ISENSIT"
+DEFAULT_TOPIC = "ISENSIT/#"
 
+PLATFORMS = ["sensor"]
 
-async def update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
-    """Handle options update."""
-    await hass.config_entries.async_reload(entry.entry_id)
-
-
-async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Unload worlds_air_quality_index config entry."""
-
-    return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
-
-async def async_migrate_entry(hass, config_entry):
-    """Migrate worlds_air_quality_index old entry."""
-    config_entries = hass.config_entries
-    data = config_entry.data
-    version = config_entry.version
-
-    _LOGGER.debug("Migrating World's Air Quality Index entry from version %s", version)
-
-    if version == 1:
-        method = CONF_LOCATION
-        idx = None
-        new_data = {**data, CONF_ID: idx, CONF_METHOD: method}
-
-        latitude = data[CONF_LATITUDE]
-        longitude = data[CONF_LONGITUDE]
-        if latitude is None:
-            latitude = hass.config.latitude
-            new_data = {**new_data, CONF_LATITUDE: latitude}
-        if longitude is None:
-            longitude = hass.config.longitude
-            new_data = {**new_data, CONF_LONGITUDE: longitude}
-        
-        version = 2
-        config_entry.version = version
-        config_entries.async_update_entry(config_entry, data=new_data)
-    
-    if version == 2:
-        tempUnit = TEMP_CELSIUS
-        new_data = {**data, CONF_TEMPERATURE_UNIT: tempUnit}
-        
-        version = 3
-        config_entry.version = version
-        config_entries.async_update_entry(config_entry, data=new_data)
+CONFIG_SCHEMA = vol.Schema(
+    {
+        DOMAIN: vol.Schema(
+            {
+                vol.Required(CONF_MQTT_BROKER): cv.string,
+                vol.Optional(CONF_MQTT_PORT, default=DEFAULT_PORT): cv.port,
+                vol.Optional(CONF_MQTT_USERNAME): cv.string,
+                vol.Optional(CONF_MQTT_PASSWORD): cv.string,
+                vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
+                vol.Optional(CONF_MQTT_TOPIC, default=DEFAULT_TOPIC): cv.string,
+                vol.Optional(CONF_SENSORS): vol.All(
+                    cv.ensure_list,
+                    [
+                        {
+                            vol.Required(CONF_NAME): cv.string,
+                            vol.Required(CONF_MQTT_TOPIC): cv.string,
+                            vol.Required("unique_id"): cv.string,
+                            vol.Optional("device_class"): cv.string,
+                            vol.Optional("state_topic"): cv.string,
+                            vol.Optional("unit_of_measurement"): cv.string,
+                            vol.Optional("value_template"): cv.template,
+                        }
+                    ],
+                ),
+            }
+        )
+    },
+    extra=vol.ALLOW_EXTRA,
+)
 
 
-    _LOGGER.info("Migration to version %s successful", version)
+async def async_setup(hass: HomeAssistantType, config: dict):
+    """Set up the ISENSIT component."""
+    component = EntityComponent(_LOGGER, DOMAIN, hass)
 
-    return True
+    conf = config[DOMAIN]
+
+    name = conf[CONF_NAME]
+    broker = conf[CONF_MQTT_BROKER]
+    port = conf[CONF_MQTT_PORT]
+    username = conf.get(CONF_MQTT_USERNAME)
+    password = conf.get(CONF_MQTT_PASSWORD)
+    topic = conf[CONF_MQTT_TOPIC]
+
+    sensors = conf.get(CONF_SENSORS, [])
+
+    coordinator = ISENSITDataUpdateCoordinator(hass, broker, port, username, password, topic)
+
+    await coordinator.async_refresh()
+
+    if coordinator.last_update_success:
+        _LOGGER.info("Connected to ISENSIT MQTT broker")
+    else:
+        _LOGGER.error("Could not connect to ISENSIT MQTT broker")
+
+    for sensor in sensors:
+        name = sensor[CONF_NAME]
+        topic = sensor[CONF_MQTT_TOPIC]
+        unique_id = sensor["unique_id"]
+        device_class = sensor.get("device_class")
+        state_topic = sensor.get("state_topic")
+        unit_of_measurement = sensor.get("unit_of_measurement")
+        value_template = sensor.get("value_template")
+
+        component.async_register_entity_service(
+            "update_sensor",
+            {
+                vol.Required("state_topic"): cv.string,
+                vol.Required("unit_of_measurement"): cv.string,
+                vol.Optional("value_template"): cv.template,
+            },
+            "async_update",
+        )
+
+        component.async_create_entity(
+            CO2Sensor(coordinator.mqtt_client, topic, unique_id, name, device_class, state_topic, unit
