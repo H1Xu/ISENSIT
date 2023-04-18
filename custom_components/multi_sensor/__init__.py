@@ -2,11 +2,14 @@
 from __future__ import annotations
 
 import logging
+import json
+import voluptuous as vol
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import (
     HomeAssistant
 )
+
 from homeassistant.const import (
     CONF_LATITUDE, 
     CONF_LONGITUDE, 
@@ -14,11 +17,27 @@ from homeassistant.const import (
     CONF_METHOD,
     CONF_ID,
     CONF_TEMPERATURE_UNIT,
+    CONF_NAME,
+    CONF_UNIQUE_ID,
     TEMP_CELSIUS
 )
 
+from homeassistant.components.mqtt import(
+    CONF_STATE_TOPIC,
+    CONF_QOS,
+    MqttAttributes,
+    MqttEntityUpdate,
+    MqttEntityDeviceInfo,
+    subscription,
+)
+
+from homeassistant.helpers import config_validation as cv
+from homeassistant.helpers.typing import ConfigType
+
+
 from .const import (
-    PLATFORMS
+    PLATFORMS,
+    DOMAIN
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -26,10 +45,35 @@ _LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up World's Air Quality Index from a config entry."""
+    hass.data[DOMAIN] = {}
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     entry.async_on_unload(entry.add_update_listener(update_listener))
     return True
+    
+    async def async_message_received(msg):
+        try:
+            payload = json.loads(msg.payload)
+            co2 = payload.get("co2")
+            if co2 is not None:
+                hass.data[DOMAIN]["co2"] = co2
+        except json.JSONDecodeError:
+            _LOGGER.error("Unable to parse JSON from MQTT payload: %s", msg.payload)
+    await subscription.async_subscribe_topics(
+        hass,
+        "multi_sensor_subscription",
+        {
+            "multi_sensor_topic": {
+                "topic": SENSOR_TOPIC,
+                "msg_callback": async_message_received,
+                "qos": 0,
+            }
+        },
+    )
+    hass.async_create_task(
+        hass.config_entries.async_forward_entry_setup(entry, "sensor")
+    )
+
 
 
 async def update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
