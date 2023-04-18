@@ -13,7 +13,7 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 
 _LOGGER = logging.getLogger(__name__)
 
-DOMAIN = "isensit"
+DOMAIN = "ISENSIT"
 
 CONF_MQTT_BROKER = "broker"
 CONF_MQTT_PORT = "port"
