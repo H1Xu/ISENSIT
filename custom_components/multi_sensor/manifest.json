@@ -1,11 +1,15 @@
 {
   "domain": "ISENSIT",
-  "name": "ThermIQ MQTT Integration",
+  "name": "multi sensor",
+  "codeowners": ["@H1Xu"],
   "config_flow": true,
-  "dependencies": ["mqtt"],
-  "documentation": "https://github.com/thermiq/thermiq_mqtt-ha",
-  "issue_tracker": "https://github.com/thermiq/thermiq_mqtt-ha/issues",
-  "codeowners": ["@thermiq"],
-  "iot_class": "local_push",
-  "version": "2.0.6"
+  "dependencies": [],
+  "documentation": "https://github.com/H1Xu/test-case",
+  "homekit": {},
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/H1Xu/test-case/issues",
+  "requirements": [],
+  "ssdp": [],
+  "version": "1.0.1",
+  "zeroconf": []
 }
