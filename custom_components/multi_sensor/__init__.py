@@ -1,82 +1,146 @@
-"""The worlds_air_quality_index component."""
-from __future__ import annotations
-
+"""Component for ThermIQ-MQTT support."""
 import logging
+from builtins import property
+import asyncio
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import (
-    HomeAssistant
-)
-from homeassistant.const import (
-    CONF_LATITUDE, 
-    CONF_LONGITUDE, 
-    CONF_LOCATION,
-    CONF_METHOD,
-    CONF_ID,
-    CONF_TEMPERATURE_UNIT,
-    TEMP_CELSIUS
-)
+from homeassistant.core import HomeAssistant, callback
+from homeassistant.const import EVENT_HOMEASSISTANT_STARTED, Platform
+from homeassistant.core import HomeAssistant, Event
 
 from .const import (
-    PLATFORMS
+    DOMAIN,
+    CONF_ID,
+)
+
+# from .automation import setup_automations
+from .input_number import setup_input_numbers
+from .input_select import setup_input_select
+
+# from .heatpump.sensor import HeatPumpSensor
+
+from .heatpump import (
+    HeatPump,
 )
 
 _LOGGER = logging.getLogger(__name__)
 
 
+PLATFORMS = [
+    "sensor",
+    "binary_sensor",
+]
+
+
+@asyncio.coroutine
+async def async_setup(hass, config):
+    """Set up HASL integration"""
+    _LOGGER.error("Set up ThermIQ-MQTT integration")
+
+    if DOMAIN not in hass.data:
+        worker = hass.data.setdefault(DOMAIN, ThermIQWorker(hass))
+    return True
+
+
+async def async_migrate_entry(hass, config_entry: ConfigEntry):
+    """Migrate configuration entry if needed"""
+    return True
+
+
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up World's Air Quality Index from a config entry."""
+    """Set up component from a config entry, config_entry contains data from config entry database."""
+    _LOGGER.error("Set up ThermIQ-MQTT integration entry " + entry.data[CONF_ID])
 
-    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
-    entry.async_on_unload(entry.add_update_listener(update_listener))
-    return True
+    # One common ThermIQWorker serves all HeatPump objects
+    if DOMAIN in hass.data:
+        worker = hass.data[DOMAIN]
+    else:
+        worker = hass.data.setdefault(DOMAIN, ThermIQWorker(hass))
 
+    # add new heatpump to worker
+    heatpump = await worker.add_entry(entry)
+    # Make config reload
+    rld = entry.add_update_listener(reload_entry)
+    entry.async_on_unload(rld)
 
-async def update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
-    """Handle options update."""
-    await hass.config_entries.async_reload(entry.entry_id)
+    async def handle_hass_started(_event: Event) -> None:
+        """Event handler for when HA has started."""
+        await hass.async_create_task(setup_input_numbers(heatpump))
+        await hass.async_create_task(setup_input_select(heatpump))
+        await hass.async_create_task(heatpump.setup_mqtt())
 
+    # Load the platforms for heatpump
+    hass.async_create_task(
+        hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+    )
 
-async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Unload worlds_air_quality_index config entry."""
-
-    return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
-
-async def async_migrate_entry(hass, config_entry):
-    """Migrate worlds_air_quality_index old entry."""
-    config_entries = hass.config_entries
-    data = config_entry.data
-    version = config_entry.version
-
-    _LOGGER.debug("Migrating World's Air Quality Index entry from version %s", version)
-
-    if version == 1:
-        method = CONF_LOCATION
-        idx = None
-        new_data = {**data, CONF_ID: idx, CONF_METHOD: method}
-
-        latitude = data[CONF_LATITUDE]
-        longitude = data[CONF_LONGITUDE]
-        if latitude is None:
-            latitude = hass.config.latitude
-            new_data = {**new_data, CONF_LATITUDE: latitude}
-        if longitude is None:
-            longitude = hass.config.longitude
-            new_data = {**new_data, CONF_LONGITUDE: longitude}
-        
-        version = 2
-        config_entry.version = version
-        config_entries.async_update_entry(config_entry, data=new_data)
-    
-    if version == 2:
-        tempUnit = TEMP_CELSIUS
-        new_data = {**data, CONF_TEMPERATURE_UNIT: tempUnit}
-        
-        version = 3
-        config_entry.version = version
-        config_entries.async_update_entry(config_entry, data=new_data)
-
-
-    _LOGGER.info("Migration to version %s successful", version)
+    # Wait for hass to start and then add the input_* entities
+    hass.bus.async_listen_once(EVENT_HOMEASSISTANT_STARTED, handle_hass_started)
+    # Make config reload
 
     return True
+
+
+async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
+    """Unload a config entry."""
+    unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+    if unload_ok:
+        worker = hass.data[DOMAIN]
+        worker.remove_entry(entry)
+        if worker.is_idle():
+            # also remove worker if not used by any entry any more
+            del hass.data[DOMAIN]
+
+    return unload_ok
+
+
+async def reload_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
+    if DOMAIN in hass.data:
+        worker = hass.data[DOMAIN]
+        await worker.update_heatpump_entry(entry)
+
+
+class ThermIQWorker:
+    """worker object. Stored in hass.data."""
+
+    def __init__(self, hass: HomeAssistant):
+        """Initialize the instance."""
+        self._hass = hass
+        self._heatpumps = {}
+        self._fetch_callback_listener = None
+        self._worker = True
+
+    @property
+    def worker(self):
+        return self._worker
+
+    @property
+    def heatpumps(self):
+        return self._heatpumps
+
+    async def add_entry(self, config_entry: ConfigEntry):
+        """Add entry."""
+        heatpump = HeatPump(self._hass, config_entry)
+        await heatpump.update_config(config_entry)
+        self._heatpumps[config_entry.data[CONF_ID]] = heatpump
+        self._hass.bus.fire(
+            f"{DOMAIN}_changed",
+            {"action": "add", "heatpump": config_entry.data[CONF_ID]},
+        )
+        return heatpump
+
+    def remove_entry(self, config_entry: ConfigEntry):
+        """Remove entry."""
+        self._hass.bus.fire(
+            f"{DOMAIN}_changed",
+            {"action": "remove", "heatpump": config_entry.data[CONF_ID]},
+        )
+        self._heatpumps.pop(config_entry.data[CONF_ID])
+
+    async def update_heatpump_entry(self, config_entry: ConfigEntry):
+        heatpump = self._heatpumps[config_entry.data[CONF_ID]]
+        await heatpump.update_config(config_entry)
+        await self._hass.async_create_task(heatpump.setup_mqtt())
+
+    def is_idle(self) -> bool:
+        return not bool(self._heatpumps)
