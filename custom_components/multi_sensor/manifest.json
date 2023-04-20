@@ -1,15 +1,11 @@
 {
-    "domain": "ISENSIT",
-    "name": "multi sensor",
-    "codeowners": ["@H1Xu"],
-    "config_flow": true,
-    "dependencies": [],
-    "documentation": "https://github.com/H1Xu/test-case",
-    "homekit": {},
-    "iot_class": "cloud_polling",
-    "issue_tracker": "https://github.com/H1Xu/test-case/issues",
-    "requirements": [],
-    "ssdp": [],
-    "version": "1.0.1",
-    "zeroconf": []
-  }
+  "domain": "ISENSIT",
+  "name": "Multi sensor",
+  "config_flow": true,
+  "dependencies": ["mqtt"],
+  "documentation": "https://github.com/H1Xu/ISENSIT",
+  "issue_tracker": "https://github.com/H1Xu/ISENSIT/issues",
+  "codeowners": ["@H1Xu"],
+  "iot_class": "local_push",
+  "version": "1.0.2"
+}
