@@ -20,11 +20,11 @@ DOMAIN = "ISENSIT"
 PLATFORMS = [Platform.SENSOR]
 SW_VERSION = "1.0.1"
 
-DEFAULT_NAME = 'waqi1'
-DISCOVERY_TYPE = "discovery_type"
-GEOGRAPHIC_LOCALIZATION = "Geographic localization"
-SCAN_INTERVAL = timedelta(minutes=30)
-STATION_ID = "Station ID"
+#DEFAULT_NAME = 'waqi1'
+#DISCOVERY_TYPE = "discovery_type"
+#GEOGRAPHIC_LOCALIZATION = "Geographic localization"
+#SCAN_INTERVAL = timedelta(minutes=30)
+#STATION_ID = "Station ID"
 
 #SENSORS = {
 #    'aqi': ['Air Quality Index', ' ', 'mdi:leaf', SensorDeviceClass.AQI],
