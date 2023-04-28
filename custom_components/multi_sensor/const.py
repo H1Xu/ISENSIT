@@ -17,7 +17,6 @@ from homeassistant.const import (
 from homeassistant.components.sensor import SensorDeviceClass
 
 DOMAIN = "ISENSIT"
-'''
 PLATFORMS = [Platform.SENSOR]
 SW_VERSION = "1.0.1"
 
@@ -27,7 +26,7 @@ GEOGRAPHIC_LOCALIZATION = "Geographic localization"
 SCAN_INTERVAL = timedelta(minutes=30)
 STATION_ID = "Station ID"
 
-SENSORS = {
+'''SENSORS = {
     'aqi': ['Air Quality Index', ' ', 'mdi:leaf', SensorDeviceClass.AQI],
     'pm10': ['Particulate matter (PM10)', CONCENTRATION_MICROGRAMS_PER_CUBIC_METER, 'mdi:skull-outline', SensorDeviceClass.PM10],
     'pm25': ['Particulate matter (PM2,5)', CONCENTRATION_MICROGRAMS_PER_CUBIC_METER, 'mdi:skull-outline', SensorDeviceClass.PM25],
@@ -63,5 +62,4 @@ WIND_DIRECTION = [
 ]
 WIND_DIRECTION_PREFIX = "arrow-azimuth-"
 WIND_DIRECTION_SUFFIX = "-deg.svg"
-WIND_DIRECTION_FOLDER = "/local/" + DOMAIN + "/"
-'''
+WIND_DIRECTION_FOLDER = "/local/" + DOMAIN + "/" '''
