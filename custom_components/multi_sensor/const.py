@@ -17,6 +17,7 @@ from homeassistant.const import (
 from homeassistant.components.sensor import SensorDeviceClass
 
 DOMAIN = "ISENSIT"
+'''
 PLATFORMS = [Platform.SENSOR]
 SW_VERSION = "1.0.1"
 
@@ -63,3 +64,4 @@ WIND_DIRECTION = [
 WIND_DIRECTION_PREFIX = "arrow-azimuth-"
 WIND_DIRECTION_SUFFIX = "-deg.svg"
 WIND_DIRECTION_FOLDER = "/local/" + DOMAIN + "/"
+'''
