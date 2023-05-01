@@ -17,8 +17,8 @@ from homeassistant.const import (
 from homeassistant.components.sensor import SensorDeviceClass
 
 DOMAIN = "ISENSIT"
-PLATFORMS = [Platform.SENSOR]
-SW_VERSION = "1.0.1"
+#PLATFORMS = [Platform.SENSOR]
+#SW_VERSION = "1.0.1"
 
 #DEFAULT_NAME = 'waqi1'
 #DISCOVERY_TYPE = "discovery_type"
@@ -40,7 +40,7 @@ SW_VERSION = "1.0.1"
     #'r': ['Rain', LENGTH_MILLIMETERS, 'mdi:weather-rainy', None],
     #'w': ['Wind speed', SPEED_METERS_PER_SECOND, 'mdi:weather-windy', None],
     #'wg': ['Wind direction', DEGREE, 'custom', None],
-#}
+}
 
 #WIND_DIRECTION = [
     #{'min': '348.75', 'max': '11.25', 'val':'0'},
@@ -59,7 +59,7 @@ SW_VERSION = "1.0.1"
     #{'min': '56.25', 'max': '78.75', 'val':'67_5'},
     #{'min': '33.75', 'max': '56.25', 'val':'45'},
     #{'min': '11.25', 'max': '33.75', 'val':'22_5'}
-#]
+]
 #WIND_DIRECTION_PREFIX = "arrow-azimuth-"
 #WIND_DIRECTION_SUFFIX = "-deg.svg"
 #WIND_DIRECTION_FOLDER = "/local/" + DOMAIN + "/"
