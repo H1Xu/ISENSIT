@@ -17,8 +17,8 @@ from homeassistant.const import (
 from homeassistant.components.sensor import SensorDeviceClass
 
 DOMAIN = "ISENSIT"
-#PLATFORMS = [Platform.SENSOR]
-#SW_VERSION = "1.0.1"
+PLATFORMS = [Platform.SENSOR]
+SW_VERSION = "1.0.1"
 
 #DEFAULT_NAME = 'waqi1'
 #DISCOVERY_TYPE = "discovery_type"
