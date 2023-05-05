@@ -1,7 +1,7 @@
 from itertools import cycle, islice
 from typing import Final
 
-DOMAIN: Final = "hildebrand_glow_ihd"
+DOMAIN: Final = "ISENSIT"
 
 ATTR_NAME = "name"
 ATTR_ACTIVITY = "activity"
