@@ -33,7 +33,7 @@ _LOGGER = logging.getLogger(__name__)
 STATE_SENSOR = [
     {
         "name": "Multisensor: CO2",
-        "device_class": SensorDeviceClass.CARBON_DIOXIDE,
+        "device_class": SensorDeviceClass.ENERGY,
         "unit_of_measurement": VOLUME_CUBIC_METERS,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:MoleculeCo2",
