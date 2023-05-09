@@ -1,5 +1,5 @@
 {
-  "name": "multisensor",
+  "name": "multi_sensor",
   "render_readme": true,
   "homeassistant": "2023.3.5"
 }
