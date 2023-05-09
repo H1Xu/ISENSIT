@@ -1,6 +1,6 @@
 {
-  "domain": "ISENSIT",
-  "name": "multi sensor",
+  "domain": "multisensor",
+  "name": "ISENSIT",
   "codeowners": ["@H1Xu"],
   "config_flow": true,
   "dependencies": ["mqtt"],
