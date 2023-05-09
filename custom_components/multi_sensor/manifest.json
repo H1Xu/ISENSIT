@@ -1,5 +1,5 @@
 {
-  "domain": "multisensor",
+  "domain": "multi_sensor",
   "name": "ISENSIT",
   "codeowners": ["@H1Xu"],
   "config_flow": true,
