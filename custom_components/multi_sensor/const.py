@@ -1,7 +1,7 @@
 from itertools import cycle, islice
 from typing import Final
 
-DOMAIN: Final = "multisensor"
+DOMAIN: Final = "multi_sensor"
 
 ATTR_NAME = "name"
 ATTR_ACTIVITY = "activity"
