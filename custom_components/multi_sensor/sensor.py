@@ -63,7 +63,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
             for updateGroup in updateGroups:
                 updateGroup.process_update(message)
 
-    data_topic = f"{topic_prefix}/#"
+    data_topic = f"/multisensor/MS-IPe0e2e6742eff/measurements/temperature"
 
     await mqtt.async_subscribe(
         hass, data_topic, mqtt_message_received, 1
