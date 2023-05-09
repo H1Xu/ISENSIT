@@ -76,7 +76,7 @@ async def async_get_device_groups(deviceUpdateGroups, async_add_entities, device
     if device_id not in deviceUpdateGroups:
         _LOGGER.debug("New device found: %s", device_id)
         groups = [
-            HildebrandGlowMqttSensorUpdateGroup(device_id, "STATE", STATE_SENSORS),
+            HildebrandGlowMqttSensorUpdateGroup(device_id, "STATE", STATE_SENSOR),
         ]
         async_add_entities(
             [sensorEntity for updateGroup in groups for sensorEntity in updateGroup.all_sensors],
