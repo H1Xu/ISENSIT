@@ -38,6 +38,14 @@ STATE_SENSOR = [
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:MoleculeCo2",
         "func": lambda js: js['value']
+    },
+    {
+        "name": "Multisensor: Temp",
+        "device_class": SensorDeviceClass.ENERGY,
+        "unit_of_measurement": VOLUME_CUBIC_METERS,
+        "state_class": SensorStateClass.MEASUREMENT,
+        "icon": "mdi:MoleculeCo2",
+        "func": lambda js: js['value']
     }
 ]
 
