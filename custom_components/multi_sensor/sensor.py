@@ -24,7 +24,7 @@ from homeassistant.const import (
     TEMP_CELSIUS，
     VOLUME_CUBIC_METERS,
     UNIT_DECIBELS,
-    SIGNAL_STRENGTH_DECIBELS,
+    UNIT_MICROGRAMS_PER_CUBIC_METER,
 )
 from homeassistant.core import callback
 from homeassistant.helpers.entity import DeviceInfo
@@ -79,6 +79,30 @@ STATE_SENSOR = [
         "unit_of_measurement": None,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:FaceMan",
+        "func": lambda js: js['value']
+    },
+    {
+        "name": "Multisensor: PM2.5",
+        "device_class": SensorDeviceClass.PM25,
+        "unit_of_measurement": UNIT_MICROGRAMS_PER_CUBIC_METER,
+        "state_class": SensorStateClass.MEASUREMENT,
+        "icon": "mdi:LiquidSpot",
+        "func": lambda js: js['value']
+    },
+    {
+        "name": "Multisensor: PM10",
+        "device_class": SensorDeviceClass.PM10,
+        "unit_of_measurement": UNIT_MICROGRAMS_PER_CUBIC_METER,
+        "state_class": SensorStateClass.MEASUREMENT,
+        "icon": "mdi:LiquidSpot",
+        "func": lambda js: js['value']
+    },
+    {
+        "name": "Multisensor: TVOC",
+        "device_class": SensorDeviceClass.PM25,
+        "unit_of_measurement": UNIT_MICROGRAMS_PER_CUBIC_METER,
+        "state_class": SensorStateClass.MEASUREMENT,
+        "icon": "mdi:LiquidSpot",
         "func": lambda js: js['value']
     },
 ]
