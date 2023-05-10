@@ -73,6 +73,14 @@ STATE_SENSOR = [
         "icon": "mdi:EarHearing",
         "func": lambda js: js['value']
     },
+    {
+        "name": "Multisensor: Occupancy",
+        "device_class": None,
+        "unit_of_measurement": None,
+        "state_class": SensorStateClass.MEASUREMENT,
+        "icon": "mdi:FaceMan",
+        "func": lambda js: js['value']
+    },
 ]
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
