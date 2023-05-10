@@ -20,6 +20,8 @@ from homeassistant.const import (
     ATTR_DEVICE_ID,
 
     ENERGY_KILO_WATT_HOUR,
+    PERCENTAGE,
+    TEMP_CELSIUS，
     VOLUME_CUBIC_METERS,
     POWER_KILO_WATT,
     SIGNAL_STRENGTH_DECIBELS,
@@ -33,18 +35,26 @@ _LOGGER = logging.getLogger(__name__)
 STATE_SENSOR = [
     {
         "name": "Multisensor: CO2",
-        "device_class": SensorDeviceClass.ENERGY,
+        "device_class": SensorDeviceClass.GAS,
         "unit_of_measurement": VOLUME_CUBIC_METERS,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:MoleculeCo2",
         "func": lambda js: js['value']
     },
     {
-        "name": "Multisensor: Temp",
-        "device_class": SensorDeviceClass.ENERGY,
-        "unit_of_measurement": VOLUME_CUBIC_METERS,
+        "name": "Multisensor: Temperature",
+        "device_class": SensorDeviceClass.TEMPERATURE,
+        "unit_of_measurement": TEMP_CELSIUS,
         "state_class": SensorStateClass.MEASUREMENT,
-        "icon": "mdi:MoleculeCo2",
+        "icon": "mdi:TemperatureCelsius",
+        "func": lambda js: js['value']
+    }
+    {
+        "name": "Multisensor: Humidity",
+        "device_class": SensorDeviceClass.Humidity,
+        "unit_of_measurement": PERCENTAGE,
+        "state_class": SensorStateClass.MEASUREMENT,
+        "icon": "mdi:Water",
         "func": lambda js: js['value']
     }
 ]
