@@ -104,7 +104,7 @@ STATE_SENSOR = [
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:LiquidSpot",
         "func": lambda js: js['value']
-    },
+    }
 ]
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
