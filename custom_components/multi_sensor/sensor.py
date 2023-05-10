@@ -19,7 +19,7 @@ from homeassistant.const import (
     CONF_DEVICE_ID,
     ATTR_DEVICE_ID,
 
-    ENERGY_KILO_WATT_HOUR,
+    LIGHT_LUX,
     PERCENTAGE,
     TEMP_CELSIUS，
     VOLUME_CUBIC_METERS,
@@ -48,15 +48,23 @@ STATE_SENSOR = [
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:TemperatureCelsius",
         "func": lambda js: js['value']
-    }
+    },
     {
         "name": "Multisensor: Humidity",
-        "device_class": SensorDeviceClass.Humidity,
+        "device_class": SensorDeviceClass.HUMIDITY,
         "unit_of_measurement": PERCENTAGE,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:Water",
         "func": lambda js: js['value']
-    }
+    },
+    {
+        "name": "Multisensor: Light intensity",
+        "device_class": SensorDeviceClass.ILLUMINANCE,
+        "unit_of_measurement": LIGHT_LUX,
+        "state_class": SensorStateClass.MEASUREMENT,
+        "icon": "mdi:LightbulbOnOutline",
+        "func": lambda js: js['value']
+    },
 ]
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
