@@ -31,7 +31,7 @@ from homeassistant.util import slugify
 
 _LOGGER = logging.getLogger(__name__)
 
-STATE_SENSOR = [
+GAS_SENSOR = [
     {
         "name": "Multisensor: CO2",
         "device_class": SensorDeviceClass.GAS,
@@ -141,7 +141,7 @@ async def async_get_device_groups(deviceUpdateGroups, async_add_entities, device
     if device_id not in deviceUpdateGroups:
         _LOGGER.debug("New device found: %s", device_id)
         groups = [
-            HildebrandGlowMqttSensorUpdateGroup(device_id, "STATE", STATE_SENSOR),
+            HildebrandGlowMqttSensorUpdateGroup(device_id, "gasmeter", GAS_SENSOR),
         ]
         async_add_entities(
             [sensorEntity for updateGroup in groups for sensorEntity in updateGroup.all_sensors],
