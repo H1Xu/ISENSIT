@@ -46,7 +46,7 @@ STATE_SENSOR = [
         "unit_of_measurement": TEMP_CELSIUS,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:TemperatureCelsius",
-        "func": lambda js: js['value']
+        value_template: "{{value_json.value}}"
     },
     {
         "name": "Multisensor: Humidity",
