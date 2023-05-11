@@ -23,7 +23,6 @@ from homeassistant.const import (
     PERCENTAGE,
     TEMP_CELSIUS,
     VOLUME_CUBIC_METERS,
-    dB,
     UNIT_MICROGRAMS_PER_CUBIC_METER,
 )
 from homeassistant.core import callback
@@ -68,7 +67,7 @@ STATE_SENSOR = [
     {
         "name": "Multisensor: Noise level",
         "device_class": SensorDeviceClass.SOUND_PRESSURE,
-        "unit_of_measurement": dB,
+        "unit_of_measurement": None,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:EarHearing",
         "func": lambda js: js['value']
