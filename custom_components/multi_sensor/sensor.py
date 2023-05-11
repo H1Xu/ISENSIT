@@ -21,7 +21,7 @@ from homeassistant.const import (
 
     LIGHT_LUX,
     PERCENTAGE,
-    TEMP_CELSIUS，
+    TEMP_CELSIUS,
     VOLUME_CUBIC_METERS,
     UNIT_DECIBELS,
     UNIT_MICROGRAMS_PER_CUBIC_METER,
@@ -44,7 +44,7 @@ STATE_SENSOR = [
     {
         "name": "Multisensor: Temperature",
         "device_class": SensorDeviceClass.TEMPERATURE,
-        "unit_of_measurement": None,
+        "unit_of_measurement": TEMP_CELSIUS,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:TemperatureCelsius",
         "func": lambda js: js['value']
