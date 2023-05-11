@@ -44,7 +44,7 @@ STATE_SENSOR = [
     {
         "name": "Multisensor: Temperature",
         "device_class": SensorDeviceClass.TEMPERATURE,
-        "unit_of_measurement": TEMP_CELSIUS,
+        "unit_of_measurement": None,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:TemperatureCelsius",
         "func": lambda js: js['value']
