@@ -22,7 +22,7 @@ class HildebrandGlowIHDMQTTConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             return self.async_show_form(
                 step_id="user", data_schema=vol.Schema({
                     vol.Required(CONF_DEVICE_ID, default='+'):str,
-                    vol.Required(CONF_TOPIC_PREFIX, default='glow'):str
+                    vol.Required(CONF_TOPIC_PREFIX, default='multisensor'):str
                 }), errors=errors
             )
 
