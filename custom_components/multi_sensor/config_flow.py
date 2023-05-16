@@ -61,6 +61,6 @@ class HildebrandGlowIHDMQTTOptionsFlowHandler(config_entries.OptionsFlow):
 
         data_schema=vol.Schema({
             vol.Required(CONF_DEVICE_ID, default=self.config_entry.options.get(CONF_DEVICE_ID, "+")):str,
-            vol.Required(CONF_TOPIC_PREFIX, default=self.config_entry.options.get(CONF_TOPIC_PREFIX, "glow")):str
+            vol.Required(CONF_TOPIC_PREFIX, default=self.config_entry.options.get(CONF_TOPIC_PREFIX, "multisensor")):str
         })
         return self.async_show_form(step_id="init", data_schema=data_schema)
