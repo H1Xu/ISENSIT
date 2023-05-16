@@ -120,7 +120,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
         """Handle received MQTT message."""
         topic = message.topic
         payload = message.payload
-        device_id = topic.split("/")[1]
+        device_id = topic.split("/")[2]
         if (device_mac == '+' or device_id == device_mac):
             updateGroups = await async_get_device_groups(deviceUpdateGroups, async_add_entities, device_id)
             _LOGGER.debug("Received message: %s", topic)
