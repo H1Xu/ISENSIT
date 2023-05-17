@@ -131,7 +131,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     data_topic = f"/multisensor/#"
 
     await mqtt.async_subscribe(
-        hass, data_topic, mqtt_message_received, 1
+        hass, data_topic, mqtt_message_received, 0
     ) 
 
 
