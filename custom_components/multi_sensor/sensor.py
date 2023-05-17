@@ -111,7 +111,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 
     # the config is defaulted to + which happens to mean we will subscribe to all devices
     device_mac = hass.data[DOMAIN][config_entry.entry_id][CONF_DEVICE_ID]
-    topic_prefix = hass.data[DOMAIN][config_entry.entry_id][CONF_TOPIC_PREFIX] or "multisensor"
+    topic_prefix = hass.data[DOMAIN][config_entry.entry_id][CONF_TOPIC_PREFIX] or "/multisensor"
 
     deviceUpdateGroups = {}
 
