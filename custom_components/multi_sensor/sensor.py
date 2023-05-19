@@ -31,7 +31,7 @@ from homeassistant.util import slugify
 
 _LOGGER = logging.getLogger(__name__)
 
-GAS_SENSOR = [
+CO2_SENSOR = [
     {
         "name": "Multisensor: CO2",
         "device_class": SensorDeviceClass.GAS,
@@ -39,7 +39,10 @@ GAS_SENSOR = [
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:MoleculeCo2",
         "func": lambda js: js['value']
-    },
+    }
+]
+
+TEMP_SENSOR = [
     {
         "name": "Multisensor: Temperature",
         "device_class": SensorDeviceClass.TEMPERATURE,
@@ -47,7 +50,10 @@ GAS_SENSOR = [
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:TemperatureCelsius",
         "func": lambda js: js['value']
-    },
+    }
+]
+
+HUM_SENSOR = [
     {
         "name": "Multisensor: Humidity",
         "device_class": SensorDeviceClass.HUMIDITY,
@@ -55,7 +61,10 @@ GAS_SENSOR = [
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:Water",
         "func": lambda js: js['value']
-    },
+    }
+]
+
+LIGHT_SENSOR = [
     {
         "name": "Multisensor: Light intensity",
         "device_class": SensorDeviceClass.ILLUMINANCE,
@@ -63,7 +72,10 @@ GAS_SENSOR = [
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:LightbulbOnOutline",
         "func": lambda js: js['value']
-    },
+    }
+]
+
+NOISE_SENSOR = [
     {
         "name": "Multisensor: Noise level",
         "device_class": SensorDeviceClass.SOUND_PRESSURE,
@@ -71,7 +83,10 @@ GAS_SENSOR = [
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:EarHearing",
         "func": lambda js: js['value']
-    },
+    }
+]
+
+OCCU_SENSOR = [
     {
         "name": "Multisensor: Occupancy",
         "device_class": None,
@@ -79,7 +94,10 @@ GAS_SENSOR = [
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:FaceMan",
         "func": lambda js: js['value']
-    },
+    }
+]
+
+PM25_SENSOR = [
     {
         "name": "Multisensor: PM2.5",
         "device_class": SensorDeviceClass.PM25,
@@ -87,7 +105,10 @@ GAS_SENSOR = [
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:LiquidSpot",
         "func": lambda js: js['value']
-    },
+    }
+]
+
+PM10_SENSOR = [
     {
         "name": "Multisensor: PM10",
         "device_class": SensorDeviceClass.PM10,
@@ -95,7 +116,10 @@ GAS_SENSOR = [
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:LiquidSpot",
         "func": lambda js: js['value']
-    },
+    }
+]
+
+TVOC_SENSOR = [
     {
         "name": "Multisensor: TVOC",
         "device_class": SensorDeviceClass.PM25,
@@ -141,7 +165,15 @@ async def async_get_device_groups(deviceUpdateGroups, async_add_entities, device
     if device_id not in deviceUpdateGroups:
         _LOGGER.debug("New device found: %s", device_id)
         groups = [
-            HildebrandGlowMqttSensorUpdateGroup(device_id, "measurements", GAS_SENSOR),
+            HildebrandGlowMqttSensorUpdateGroup(device_id, "measurements/co2-ndir", CO2_SENSOR),
+            HildebrandGlowMqttSensorUpdateGroup(device_id, "measurements/temperature", TEMP_SENSOR),
+            HildebrandGlowMqttSensorUpdateGroup(device_id, "measurements/humidity", HUM_SENSOR),
+            HildebrandGlowMqttSensorUpdateGroup(device_id, "measurements/lightintensity", LIGHT_SENSOR),
+            HildebrandGlowMqttSensorUpdateGroup(device_id, "measurements/noise", NOISE_SENSOR),
+            HildebrandGlowMqttSensorUpdateGroup(device_id, "measurements/occupancy", OCCU_SENSOR),
+            HildebrandGlowMqttSensorUpdateGroup(device_id, "measurements/pm2.5", PM25_SENSOR),
+            HildebrandGlowMqttSensorUpdateGroup(device_id, "measurements/pm10", PM10_SENSOR),
+            HildebrandGlowMqttSensorUpdateGroup(device_id, "measurements/tvoc", TVOC_SENSOR),
         ]
         async_add_entities(
             [sensorEntity for updateGroup in groups for sensorEntity in updateGroup.all_sensors],
