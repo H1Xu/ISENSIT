@@ -46,7 +46,7 @@ GAS_SENSOR = [
         "unit_of_measurement": TEMP_CELSIUS,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:TemperatureCelsius",
-        "func": lambda js: js['value_json.value']
+        "func": lambda js: js['value']
     },
     {
         "name": "Multisensor: Humidity",
