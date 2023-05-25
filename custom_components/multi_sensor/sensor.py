@@ -165,15 +165,15 @@ async def async_get_device_groups(deviceUpdateGroups, async_add_entities, device
     if device_id not in deviceUpdateGroups:
         _LOGGER.debug("New device found: %s", device_id)
         groups = [
-            HildebrandGlowMqttSensorUpdateGroup(device_id, "measurements/co2-ndir", CO2_SENSOR),
-            HildebrandGlowMqttSensorUpdateGroup(device_id, "measurements/temperature", TEMP_SENSOR),
-            HildebrandGlowMqttSensorUpdateGroup(device_id, "measurements/humidity", HUM_SENSOR),
-            HildebrandGlowMqttSensorUpdateGroup(device_id, "measurements/lightintensity", LIGHT_SENSOR),
-            HildebrandGlowMqttSensorUpdateGroup(device_id, "measurements/noise", NOISE_SENSOR),
-            HildebrandGlowMqttSensorUpdateGroup(device_id, "measurements/occupancy", OCCU_SENSOR),
-            HildebrandGlowMqttSensorUpdateGroup(device_id, "measurements/pm2.5", PM25_SENSOR),
-            HildebrandGlowMqttSensorUpdateGroup(device_id, "measurements/pm10", PM10_SENSOR),
-            HildebrandGlowMqttSensorUpdateGroup(device_id, "measurements/tvoc", TVOC_SENSOR),
+            MultisensorUpdateGroup(device_id, "measurements/co2-ndir", CO2_SENSOR),
+            MultisensorUpdateGroup(device_id, "measurements/temperature", TEMP_SENSOR),
+            MultisensorUpdateGroup(device_id, "measurements/humidity", HUM_SENSOR),
+            MultisensorUpdateGroup(device_id, "measurements/lightintensity", LIGHT_SENSOR),
+            MultisensorUpdateGroup(device_id, "measurements/noise", NOISE_SENSOR),
+            MultisensorUpdateGroup(device_id, "measurements/occupancy", OCCU_SENSOR),
+            MultisensorUpdateGroup(device_id, "measurements/pm2.5", PM25_SENSOR),
+            MultisensorUpdateGroup(device_id, "measurements/pm10", PM10_SENSOR),
+            MultisensorUpdateGroup(device_id, "measurements/tvoc", TVOC_SENSOR),
         ]
         async_add_entities(
             [sensorEntity for updateGroup in groups for sensorEntity in updateGroup.all_sensors],
@@ -184,13 +184,13 @@ async def async_get_device_groups(deviceUpdateGroups, async_add_entities, device
     return deviceUpdateGroups[device_id]
   
 
-class HildebrandGlowMqttSensorUpdateGroup:
+class MultisensorUpdateGroup:
     """Representation of Hildebrand Glow MQTT Meter Sensors that all get updated together."""
 
     def __init__(self, device_id: str, topic_regex: str, meters: Iterable) -> None:
         """Initialize the sensor collection."""
         self._topic_regex = re.compile(topic_regex)
-        self._sensors = [HildebrandGlowMqttSensor(device_id = device_id, **meter) for meter in meters]
+        self._sensors = [MultisensorSensor(device_id = device_id, **meter) for meter in meters]
 
     def process_update(self, message: ReceiveMessage) -> None:
         """Process an update from the MQTT broker."""
@@ -203,11 +203,11 @@ class HildebrandGlowMqttSensorUpdateGroup:
                 sensor.process_update(parsed_data)
 
     @property
-    def all_sensors(self) -> Iterable[HildebrandGlowMqttSensor]:
+    def all_sensors(self) -> Iterable[MultisensorSensor]:
         """Return all meters."""
         return self._sensors
 
-class HildebrandGlowMqttSensor(SensorEntity):
+class MultisensorSensor(SensorEntity):
     """Representation of a room sensor that is updated via MQTT."""
 
     def __init__(self, device_id, name, icon, device_class, unit_of_measurement, state_class, func, entity_category = EntityCategory.CONFIG, ignore_zero_values = False) -> None:
@@ -229,9 +229,9 @@ class HildebrandGlowMqttSensor(SensorEntity):
         self._func = func        
         self._attr_device_info = DeviceInfo(
             connections={("mac", device_id)},
-            manufacturer="Hildebrand Technology Limited",
-            model="Glow Smart Meter IHD",
-            name=f"Glow Smart Meter {device_id}",
+            manufacturer="VTEC lasers & sensors",
+            model="Multisensor",
+            name=f"Multisensor {device_id}",
         )
         self._attr_native_value = None
 
