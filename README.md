@@ -11,9 +11,10 @@ Multisensor integration on Home Assistant
 ## Plugin install
  1. Download HACS from Home Assistant.
  2. Enter 'integration' and click three dots at the top right corner.
- 3. Enter the URL of the plugin and select 'integration'.
- 4. Click '+' at bottom right corner and search for 'isensit' or 'multisensor'.
- 5. Click 'install' and restart Home Assistant after installation.
- 6. Enter 'Settings' and select 'Devices & Services'.
- 7. Click 'Add integration' at bottom and search for 'isensit' or 'multisensor'.
- 8. All the settings are done. Device and entities will jump out when topics are received.
+ 3. Select 'custom repositories'.
+ 4. Enter the URL of the plugin and select 'integration'.
+ 5. Click '+' at bottom right corner and search for 'isensit' or 'multisensor'.
+ 6. Click 'install' and restart Home Assistant after installation.
+ 7. Enter 'Settings' and select 'Devices & Services'.
+ 8. Click 'Add integration' at bottom and search for 'isensit' or 'multisensor'.
+ 9. All the settings are done. Device and entities will jump out when topics are received.
