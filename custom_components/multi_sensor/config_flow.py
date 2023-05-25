@@ -11,7 +11,7 @@ from .const import DOMAIN, CONF_TOPIC_PREFIX
 
 _LOGGER = logging.getLogger(__name__)
 
-class HildebrandGlowIHDMQTTConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+class MultisensorConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     VERSION = 1
     CONNECTION_CLASS = config_entries.CONN_CLASS_LOCAL_PUSH
 
@@ -44,11 +44,11 @@ class HildebrandGlowIHDMQTTConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     @callback
     def async_get_options_flow(config_entry):
         """Get the options flow for this handler."""
-        return HildebrandGlowIHDMQTTOptionsFlowHandler(config_entry)
+        return MultisensorOptionsFlowHandler(config_entry)
 
 
-class HildebrandGlowIHDMQTTOptionsFlowHandler(config_entries.OptionsFlow):
-    """Handle a option flow for HildebrandGlowIHDMQTT."""
+class MultisensorOptionsFlowHandler(config_entries.OptionsFlow):
+    """Handle a option flow for Multisensor."""
 
     def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
         """Initialize options flow."""
