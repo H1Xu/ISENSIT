@@ -1,4 +1,4 @@
-"""The hildebrand_glow_ihd_mqtt component."""
+"""Set up for Multisensor Integration"""
 import logging
 
 from homeassistant.config_entries import ConfigEntry
@@ -14,7 +14,7 @@ _LOGGER = logging.getLogger(__name__)
 PLATFORMS = ["sensor"]
 
 async def async_setup(hass: HomeAssistant, config: dict):
-    """Set up the Hildebrand Glow IHD MQTT integration."""
+    """Set up the Multisensor integration."""
 
     if DOMAIN not in hass.data:
         hass.data[DOMAIN] = {}
@@ -22,7 +22,7 @@ async def async_setup(hass: HomeAssistant, config: dict):
     return True
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
-    _LOGGER.debug("Setting up Hildebrand Glow IHD MQTT integration")
+    _LOGGER.debug("Setting up Multisensor integration")
 
     if entry.entry_id not in hass.data[DOMAIN]:
         hass.data[DOMAIN][entry.entry_id] = {}
@@ -34,6 +34,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
         hass.async_create_task(
             hass.config_entries.async_forward_entry_setup(entry, component))
 
-    _LOGGER.debug("Finished setting up Hildebrand Glow IHD MQTT integration")
+    _LOGGER.debug("Finished setting up Multisensor integration")
     return True
 
