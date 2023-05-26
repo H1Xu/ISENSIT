@@ -1,4 +1,4 @@
-"""Support for hildebrand glow MQTT sensors."""
+"""Support for Multisensor integration, heavily based on megakid/ha_hildebrand_glow_ihd_mqtt"""
 from __future__ import annotations
 
 import json

@@ -1,4 +1,4 @@
-"""Config flow for Hildebrand Glow IHD MQTT."""
+"""Config flow for Multisensor integration, heavily based on megakid/ha_hildebrand_glow_ihd_mqtt."""
 import logging
 
 import voluptuous as vol

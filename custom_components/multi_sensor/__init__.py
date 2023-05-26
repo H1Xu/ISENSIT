@@ -1,4 +1,4 @@
-"""Set up for Multisensor Integration"""
+"""Set up for Multisensor Integration, heavily based on megakid/ha_hildebrand_glow_ihd_mqtt"""
 import logging
 
 from homeassistant.config_entries import ConfigEntry
