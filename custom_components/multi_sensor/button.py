@@ -8,9 +8,9 @@ import time
 
 payload = {"unique_id": "multisensor_alarm_switch",
            "name": "Multisensor alarm switch",
-           "state_topic": "home/bedroom/bedroom_socket_switch",
+           "state_topic": "/multisensor/MS-IPe0e2e6742eff/peripherals/sound/POST",
            "command_topic": "/multisensor/MS-IPe0e2e6742eff/peripherals/sound/POST",
-           "availability_topic": "home/bedroom/bedroom_socket_switch/available",
+           "availability_topic": "/multisensor/MS-IPe0e2e6742eff/peripherals/sound/POST",
            "payload_on": '{"mode" : "ON", "duration" : 1000}',
            "payload_off": '{"mode" : "OFF", "duration" : 1000}',
            "state_on": "ON",
@@ -21,9 +21,9 @@ payload = {"unique_id": "multisensor_alarm_switch",
            }
 
 payload = json.dumps(payload)  # convert to JSON
-config_topic = 'homeassistant/switch/bedroom_socket_switch/config'
+config_topic = '/multisensor/MS-IPe0e2e6742eff/peripherals/sound/POST'
 
-topic = 'home/bedroom/bedroom_socket_switch/available'
+topic = '/multisensor/MS-IPe0e2e6742eff/peripherals/sound/POST'
 
 def on_message_callback(client, userdata, message):
     print(message.topic + " " + ":" + str(message.payload))
@@ -45,6 +45,6 @@ client.on_message = on_message_callback
 client.loop_start()
 
 # command_topic = '/multisensor/MS-IPe0e2e6742eff/peripherals/sound/POST'
-while True:
+# while True:
     # client.publish(command_topic, "online", qos=1)
-    time.sleep(1)
+    # time.sleep(1)
