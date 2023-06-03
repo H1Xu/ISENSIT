@@ -3,7 +3,7 @@ import logging
 
 from homeassistant.components import mqtt
 from homeassistant.components.switch import DEVICE_CLASS_SWITCH, SwitchEntity
-from homeassistant.const import CONF_IP_ADDRESS, CONF_MAC, CONF_NAME
+from homeassistant.const import CONF_DEVICE_ID
 
 from .const import DEFAULT_NAME, DOMAIN
 
@@ -13,9 +13,8 @@ _LOGGER = logging.getLogger(__name__)
 async def async_setup_entry(hass, config_entry, async_add_entities):
     """Start HisenseTV switch setup process."""
     _LOGGER.debug("async_setup_entry config: %s", config_entry.data)
-
-    name = config_entry.data[CONF_NAME]
-    uid = config_entry.unique_id
+    name = hass.data[DOMAIN][config_entry.entry_id][CONF_DEVICE_ID]
+    uid = hass.data[DOMAIN][config_entry.entry_id][CONF_DEVICE_ID]
     if uid is None:
         uid = config_entry.entry_id
 
