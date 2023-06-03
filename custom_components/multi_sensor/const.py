@@ -13,5 +13,6 @@ ATTR_OPERATING_HOURS = "operating_hours"
 ATTR_LAST_ERROR = "last_error"
 ATTR_ERROR = "error"
 ATTR_STATE = "state"
+DEFAULT_NAME = "test2"
 
 CONF_TOPIC_PREFIX = "topic_prefix"
