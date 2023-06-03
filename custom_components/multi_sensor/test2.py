@@ -6,6 +6,10 @@ from homeassistant.components.switch import DEVICE_CLASS_SWITCH, SwitchEntity
 from homeassistant.const import CONF_DEVICE_ID
 
 from .const import DEFAULT_NAME, DOMAIN
+from homeassistant.components.media_player.const import (
+    SUPPORT_TURN_OFF,
+    SUPPORT_TURN_ON
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -60,7 +64,7 @@ class HisenseTvSwitch(SwitchEntity):
     @property
     def device_info(self):
         return {
-            "identifiers": {(DOMAIN, self.uid)},
+            "identifiers": {(DOMAIN, '123344444')},
             "name": self._name,
             "manufacturer": DEFAULT_NAME,
         }
@@ -83,12 +87,12 @@ class HisenseTvSwitch(SwitchEntity):
     def should_poll(self):
         """No polling needed."""
         return False
-    #
-    # @property
-    # def supported_features(self):
-    #     """Flag media player features that are supported."""
-    #     _LOGGER.debug("supported_features")
-    #     return (
-    #             SUPPORT_TURN_ON
-    #             | SUPPORT_TURN_OFF
-    #     )
+
+    @property
+    def supported_features(self):
+        """Flag media player features that are supported."""
+        _LOGGER.debug("supported_features")
+        return (
+                SUPPORT_TURN_ON
+                | SUPPORT_TURN_OFF
+        )
