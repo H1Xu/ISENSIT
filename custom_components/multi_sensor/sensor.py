@@ -34,8 +34,8 @@ _LOGGER = logging.getLogger(__name__)
 CO2_SENSOR = [
     {
         "name": "Multisensor: CO2",
-        "device_class": SensorDeviceClass.GAS,
-        "unit_of_measurement": VOLUME_CUBIC_METERS,
+        "device_class": SensorDeviceClass.CO2,
+        "unit_of_measurement": 'ppm',
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:MoleculeCo2",
         "func": lambda js: js['value']
@@ -79,7 +79,7 @@ NOISE_SENSOR = [
     {
         "name": "Multisensor: Noise level",
         "device_class": SensorDeviceClass.SOUND_PRESSURE,
-        "unit_of_measurement": None,
+        "unit_of_measurement": 'dB',
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:EarHearing",
         "func": lambda js: js['value']
@@ -101,7 +101,7 @@ PM25_SENSOR = [
     {
         "name": "Multisensor: PM2.5",
         "device_class": SensorDeviceClass.PM25,
-        "unit_of_measurement": None,
+        "unit_of_measurement": 'µg/m³',
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:LiquidSpot",
         "func": lambda js: js['value']
@@ -112,7 +112,7 @@ PM10_SENSOR = [
     {
         "name": "Multisensor: PM10",
         "device_class": SensorDeviceClass.PM10,
-        "unit_of_measurement": None,
+        "unit_of_measurement": 'µg/m³',
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:LiquidSpot",
         "func": lambda js: js['value']
@@ -123,7 +123,7 @@ TVOC_SENSOR = [
     {
         "name": "Multisensor: TVOC",
         "device_class": SensorDeviceClass.PM25,
-        "unit_of_measurement": None,
+        "unit_of_measurement": 'µg/m³',
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:LiquidSpot",
         "func": lambda js: js['value']
